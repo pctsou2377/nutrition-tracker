@@ -1,7 +1,7 @@
 {
-  "name": "Nutrition Tracker v2",
+  "name": "Nutrition Tracker v2.1",
   "short_name": "Nutrition",
-  "description": "Bilingual nutrition tracker PWA",
+  "description": "Smart target range nutrition tracker PWA",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f5f5f7",
