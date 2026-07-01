@@ -25,6 +25,8 @@ input,select{width:100%;border:1px solid #d1d5db;border-radius:16px;padding:12px
 .section{display:none}.section.active{display:block}.settingBlock{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.settingBlock h3{margin:0 0 10px}.rangeGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:520px){.metricGrid{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}.header h1{font-size:28px}}
 
-.updateBanner{display:none;position:fixed;left:14px;right:14px;bottom:92px;max-width:680px;margin:auto;background:#111827;color:white;border-radius:18px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.25);z-index:50;align-items:center;justify-content:space-between;gap:12px;font-weight:900}
+.updateBanner{display:none;position:fixed;left:14px;right:14px;bottom:calc(92px + env(safe-area-inset-bottom));max-width:680px;margin:auto;background:#111827;color:white;border-radius:18px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.25);z-index:100;align-items:center;justify-content:space-between;gap:12px;font-weight:900}
 .updateBanner button{background:#fff;color:#111827;padding:9px 12px;border-radius:12px}
 .updateBanner.show{display:flex}
+
+@media(max-width:520px){.updateBanner{bottom:calc(108px + env(safe-area-inset-bottom));left:12px;right:12px}}

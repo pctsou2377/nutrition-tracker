@@ -1,7 +1,7 @@
 {
-  "name": "Nutrition Tracker v3.0.1",
+  "name": "Nutrition Tracker v3.0.2",
   "short_name": "Nutrition",
-  "description": "Nutrition tracker PWA with improved update flow",
+  "description": "Nutrition tracker PWA with improved update banner placement",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f5f5f7",
