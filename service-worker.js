@@ -1,4 +1,4 @@
-const CACHE_NAME = "nutrition-tracker-v3-2";
+const CACHE_NAME = "nutrition-tracker-v3-2-1";
 const ASSETS = [
   "./styles.css",
   "./i18n.js",
