@@ -9,7 +9,7 @@
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="apple-touch-icon" href="./icon-192.png" />
 <link rel="stylesheet" href="./styles.css" />
-<title>Nutrition Tracker v3.0.2</title>
+<title>Nutrition Tracker v3.1</title>
 </head>
 <body>
 <div class="app">
@@ -100,6 +100,20 @@
 <button class="fab" id="openSheetBtn">＋</button>
 <div class="updateBanner" id="updateBanner"><span>有新版本可用</span><button id="reloadBtn">立即更新</button></div>
 <div class="toast" id="toast"></div>
+
+<div class="modalBg" id="importPreviewBg">
+  <div class="modalCard">
+    <h2 data-i18n="importPreview">匯入預覽</h2>
+    <p class="small" data-i18n="importPreviewNote">請確認備份內容。匯入後會覆蓋目前資料。</p>
+    <div class="dataStats" id="importPreviewStats"></div>
+    <br>
+    <div class="modalActions">
+      <button class="gray" id="cancelImportBtn" data-i18n="cancel">取消</button>
+      <button id="confirmImportBtn" data-i18n="confirmImportBtn">確認匯入</button>
+    </div>
+  </div>
+</div>
+
 
 <div class="sheetBg" id="sheetBg">
   <div class="sheet">

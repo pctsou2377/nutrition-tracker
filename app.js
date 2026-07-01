@@ -1,5 +1,6 @@
 let state = loadState();
 let currentDate = todayISO();
+let pendingImportState = null;
 
 const nutrients = [
   { key: "cal", field: "cal", labelKey: "cal", unit: "kcal" },
@@ -217,15 +218,21 @@ function renderSettings() {
   }).join("");
 }
 
+
+function stateStats(targetState) {
+  const dates = Object.keys(targetState.days || {}).filter(date => (targetState.days[date] || []).length);
+  const foodCount = dates.reduce((sum, date) => sum + (targetState.days[date] || []).length, 0);
+  const weightCount = Object.keys(targetState.weights || {}).length;
+  return { days: dates.length, foods: foodCount, weights: weightCount };
+}
+
 function renderBackupStats() {
-  const dates = Object.keys(state.days).filter(date => (state.days[date] || []).length);
-  const foodCount = dates.reduce((sum, date) => sum + (state.days[date] || []).length, 0);
-  const weightCount = Object.keys(state.weights).length;
+  const stats = stateStats(state);
   $("#dataStats").innerHTML = `
-    <div class="statBox"><div>${t("recordDays")}</div><div>${dates.length}</div></div>
-    <div class="statBox"><div>${t("foodEntries")}</div><div>${foodCount}</div></div>
-    <div class="statBox"><div>${t("weightEntries")}</div><div>${weightCount}</div></div>
-    <div class="statBox"><div>Version</div><div>3β</div></div>
+    <div class="statBox"><div>${t("recordDays")}</div><div>${stats.days}</div></div>
+    <div class="statBox"><div>${t("foodEntries")}</div><div>${stats.foods}</div></div>
+    <div class="statBox"><div>${t("weightEntries")}</div><div>${stats.weights}</div></div>
+    <div class="statBox"><div>Version</div><div>3.1</div></div>
   `;
 }
 
@@ -317,33 +324,57 @@ function exportData() {
   downloadJSON("nutrition_tracker_backup.json", {
     ...state,
     exportedAt: new Date().toISOString(),
-    appVersion: "3-beta"
+    appVersion: "3.1"
   });
 }
 
 function importData(event) {
   const file = event.target.files[0];
   if (!file) return;
-  if (!confirm(t("confirmImport"))) {
-    event.target.value = "";
-    return;
-  }
 
   const reader = new FileReader();
   reader.onload = () => {
     try {
       const data = JSON.parse(reader.result);
       if (!data.days || !data.ranges) throw new Error("Invalid backup");
-      state = normalizeState(data);
-      saveState();
-      event.target.value = "";
-      renderAll();
-      toast(t("imported"));
+
+      pendingImportState = normalizeState(data);
+      const incoming = stateStats(pendingImportState);
+      const current = stateStats(state);
+
+      $("#importPreviewStats").innerHTML = `
+        <div class="statBox"><div>${t("backupVersion")}</div><div>${data.appVersion || "Unknown"}</div></div>
+        <div class="statBox"><div>${t("currentData")}</div><div>${current.days} / ${current.foods}</div></div>
+        <div class="statBox"><div>${t("recordDays")}</div><div>${incoming.days}</div></div>
+        <div class="statBox"><div>${t("foodEntries")}</div><div>${incoming.foods}</div></div>
+        <div class="statBox"><div>${t("weightEntries")}</div><div>${incoming.weights}</div></div>
+        <div class="statBox"><div>File</div><div>JSON</div></div>
+      `;
+
+      $("#importPreviewBg").classList.add("show");
     } catch {
       toast(t("importError"));
+    } finally {
+      event.target.value = "";
     }
   };
   reader.readAsText(file);
+}
+
+
+function confirmImport() {
+  if (!pendingImportState) return;
+  state = pendingImportState;
+  pendingImportState = null;
+  $("#importPreviewBg").classList.remove("show");
+  saveState();
+  renderAll();
+  toast(t("imported"));
+}
+
+function cancelImport() {
+  pendingImportState = null;
+  $("#importPreviewBg").classList.remove("show");
 }
 
 function clearAll() {
@@ -378,6 +409,9 @@ function bindEvents() {
   $("#exportBtn").addEventListener("click", exportData);
   $("#importFile").addEventListener("change", importData);
   $("#clearAllBtn").addEventListener("click", clearAll);
+  $("#confirmImportBtn").addEventListener("click", confirmImport);
+  $("#cancelImportBtn").addEventListener("click", cancelImport);
+  $("#importPreviewBg").addEventListener("click", event => { if (event.target.id === "importPreviewBg") cancelImport(); });
 
   $("#langSelect").addEventListener("change", event => {
     state.lang = event.target.value;

@@ -18,7 +18,7 @@ const I18N = {
     confirmAll:"確定清除全部資料？", confirmImport:"匯入會覆蓋目前資料，確定繼續？",
     imported:"匯入完成", importError:"匯入失敗，檔案格式不正確", noWeight:"尚未紀錄體重",
     added:"已新增到", updated:"已更新", items:"項", emptyDay:"尚無歷史紀錄",
-    recordDays:"紀錄天數", foodEntries:"食物筆數", weightEntries:"體重筆數"
+    recordDays:"紀錄天數", foodEntries:"食物筆數", weightEntries:"體重筆數", importPreview:"匯入預覽", importPreviewNote:"請確認備份內容。匯入後會覆蓋目前資料。", cancel:"取消", confirmImportBtn:"確認匯入", backupVersion:"備份版本", currentData:"目前資料", incomingData:"即將匯入"
   },
   id: {
     title:"Nutrition Tracker", todayBtn:"Hari ini", dashboard:"Dashboard", rangeHint:"Pantauan rentang ideal",
@@ -39,7 +39,7 @@ const I18N = {
     confirmAll:"Yakin hapus semua data?", confirmImport:"Impor akan mengganti data saat ini. Lanjutkan?",
     imported:"Impor selesai", importError:"Impor gagal, format file tidak benar", noWeight:"Belum ada catatan berat",
     added:"Ditambahkan ke", updated:"Diperbarui", items:"item", emptyDay:"Belum ada riwayat",
-    recordDays:"Jumlah hari", foodEntries:"Catatan makanan", weightEntries:"Catatan berat"
+    recordDays:"Jumlah hari", foodEntries:"Catatan makanan", weightEntries:"Catatan berat", importPreview:"Pratinjau impor", importPreviewNote:"Periksa isi cadangan. Impor akan mengganti data saat ini.", cancel:"Batal", confirmImportBtn:"Konfirmasi impor", backupVersion:"Versi cadangan", currentData:"Data saat ini", incomingData:"Data yang akan diimpor"
   }
 };
 
