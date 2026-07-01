@@ -1,0 +1,21 @@
+{
+  "name": "營養追蹤 PWA",
+  "short_name": "營養追蹤",
+  "description": "通用營養、熱量、三大營養素與體重追蹤工具",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f4f6",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
