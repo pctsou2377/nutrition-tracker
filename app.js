@@ -214,12 +214,21 @@ function movingAverage(entries, windowSize = 7) {
 }
 
 function trendByWindow(entries, windowSize) {
-  if (entries.length < windowSize * 2) return null;
-  const latest = entries.slice(-windowSize);
-  const previous = entries.slice(-windowSize * 2, -windowSize);
-  const avgLatest = latest.reduce((sum, x) => sum + x.weight, 0) / latest.length;
-  const avgPrevious = previous.reduce((sum, x) => sum + x.weight, 0) / previous.length;
-  return avgLatest - avgPrevious;
+  const recent = entries.slice(-windowSize);
+  if (recent.length < 2) return null;
+
+  const points = recent.map((item, index) => ({ x: index, y: item.weight }));
+  const n = points.length;
+  const sumX = points.reduce((sum, p) => sum + p.x, 0);
+  const sumY = points.reduce((sum, p) => sum + p.y, 0);
+  const sumXY = points.reduce((sum, p) => sum + p.x * p.y, 0);
+  const sumXX = points.reduce((sum, p) => sum + p.x * p.x, 0);
+
+  const denominator = n * sumXX - sumX * sumX;
+  if (denominator === 0) return null;
+
+  const slopePerEntry = (n * sumXY - sumX * sumY) / denominator;
+  return slopePerEntry * (n - 1);
 }
 
 function trendText(value) {
@@ -332,7 +341,7 @@ function renderBackupStats() {
     <div class="statBox"><div>${t("recordDays")}</div><div>${stats.days}</div></div>
     <div class="statBox"><div>${t("foodEntries")}</div><div>${stats.foods}</div></div>
     <div class="statBox"><div>${t("weightEntries")}</div><div>${stats.weights}</div></div>
-    <div class="statBox"><div>Version</div><div>3.2.1</div></div>
+    <div class="statBox"><div>Version</div><div>3.2.2</div></div>
   `;
 }
 
@@ -424,7 +433,7 @@ function exportData() {
   downloadJSON("nutrition_tracker_backup.json", {
     ...state,
     exportedAt: new Date().toISOString(),
-    appVersion: "3.2.1"
+    appVersion: "3.2.2"
   });
 }
 

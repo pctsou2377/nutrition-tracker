@@ -1,7 +1,7 @@
 {
-  "name": "Nutrition Tracker v3.2.1",
+  "name": "Nutrition Tracker v3.2.2",
   "short_name": "Nutrition",
-  "description": "Nutrition tracker PWA with fixed weight analytics",
+  "description": "Nutrition tracker PWA with improved weight trend calculation",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f5f5f7",
