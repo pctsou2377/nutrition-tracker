@@ -8,85 +8,146 @@
 <meta name="apple-mobile-web-app-title" content="Nutrition" />
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="apple-touch-icon" href="./icon-192.png" />
-<title>Nutrition Tracker v2.4</title>
-<style>
-:root{--bg:#f5f5f7;--card:#fff;--text:#111827;--muted:#6b7280;--blue:#2563eb;--green:#16a34a;--yellow:#ca8a04;--orange:#ea580c;--line:#e5e7eb;--soft:#f3f4f6}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC",Arial,sans-serif;color:var(--text)}
-.app{max-width:720px;margin:0 auto;padding:18px 14px 96px}.header{position:sticky;top:0;z-index:5;background:rgba(245,245,247,.9);backdrop-filter:blur(16px);padding:14px 4px 10px}.header h1{margin:0;font-size:30px;letter-spacing:-.8px}.header p{margin:4px 0 0;color:var(--muted)}
-.card{background:var(--card);border-radius:26px;padding:18px;margin:14px 0;box-shadow:0 10px 30px rgba(0,0,0,.06)}.dateCard{padding:12px}.dateRow{display:flex;gap:8px;align-items:center}.dateRow input{flex:1}
-.summaryCard{background:linear-gradient(135deg,#111827,#1f2937);color:white}.summaryStatus{font-size:25px;font-weight:900}.summaryCard p{margin:7px 0 0;color:#d1d5db}
-.dashboardTitle{display:flex;align-items:end;justify-content:space-between;margin-bottom:12px}.dashboardTitle h2{margin:0;font-size:24px}.dashboardTitle span{color:var(--muted);font-size:13px}
-.metricGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{background:#fafafa;border:1px solid #eef0f3;border-radius:22px;padding:14px}.metricHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.metricName{font-weight:900;font-size:17px}.metricValue{font-weight:800;color:#374151}
-.bar{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:9px 0}.fill{height:100%;width:0%}.fill.low{background:var(--yellow)}.fill.ideal{background:var(--green)}.fill.high{background:var(--orange)}
-.rangeText{font-size:12px;color:var(--muted);margin-bottom:8px}.infoRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.miniBox{background:white;border:1px solid #edf0f2;border-radius:14px;padding:8px}.miniBox div:first-child{font-size:11px;color:var(--muted)}.miniBox div:last-child{font-size:15px;font-weight:900;margin-top:2px}
-.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:12px;font-weight:900;margin-top:9px}.badge.low{background:#fef3c7;color:#92400e}.badge.ideal{background:#dcfce7;color:#166534}.badge.high{background:#ffedd5;color:#9a3412}
-.mealTitle{display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:900;font-size:18px}.mealSummary{color:var(--muted);font-size:13px;margin-top:8px;line-height:1.5}.foodCard{border-top:1px solid var(--line);padding:13px 0}.foodName{font-weight:900;font-size:17px}.foodSub{color:var(--muted);font-size:13px;margin-top:4px}
-.macroRow{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.pill{background:var(--soft);border-radius:999px;padding:6px 9px;font-size:13px}.actions{display:flex;gap:8px;margin-top:10px}.actions button{flex:1}
-.historyItem{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:14px 0;cursor:pointer}.historyDate{font-weight:900}.historyMeta{color:var(--muted);font-size:13px;margin-top:4px}.historyBadge{background:#eef2ff;color:var(--blue);border-radius:999px;padding:6px 9px;font-weight:900;font-size:12px}.importBox{border:1px dashed #cbd5e1;background:#f8fafc;border-radius:20px;padding:14px;margin-top:12px}.dataStats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.statBox{background:#f9fafb;border:1px solid #eef0f3;border-radius:18px;padding:12px}.statBox div:first-child{font-size:12px;color:var(--muted)}.statBox div:last-child{font-size:20px;font-weight:900;margin-top:4px}.chevron{font-size:22px;color:#9ca3af;font-weight:900}
-button,input,select{font:inherit}button{border:0;border-radius:16px;padding:12px 14px;font-weight:900;background:var(--blue);color:white}button.gray{background:#e5e7eb;color:#111827}button.red{background:#dc2626}
-input,select{width:100%;border:1px solid #d1d5db;border-radius:16px;padding:12px;background:white}label{display:block;font-weight:800;font-size:13px;margin-bottom:5px;color:#374151}
-.fab{position:fixed;right:22px;bottom:26px;width:62px;height:62px;border-radius:50%;font-size:34px;box-shadow:0 12px 28px rgba(37,99,235,.35);z-index:20}.sheetBg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:30}.sheet{position:absolute;left:0;right:0;bottom:0;background:white;border-radius:28px 28px 0 0;padding:18px 16px 26px;max-width:720px;margin:auto;max-height:88vh;overflow:auto}.sheetHandle{width:42px;height:5px;background:#d1d5db;border-radius:999px;margin:0 auto 12px}.sheetHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sheetHead h2{margin:0}
-.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#111827;color:white;padding:12px 16px;border-radius:999px;box-shadow:0 12px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:40;font-weight:900}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.small{font-size:13px;color:var(--muted);line-height:1.5}.bottomNav{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:15}.bottomNavInner{max-width:720px;width:100%;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px 8px max(8px,env(safe-area-inset-bottom))}.navBtn{background:transparent;color:#6b7280;padding:8px 4px;border-radius:14px;font-size:14px}.navBtn.active{background:#eef2ff;color:var(--blue)}
-.section{display:none}.section.active{display:block}.settingBlock{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.settingBlock h3{margin:0 0 10px}.rangeGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:520px){.metricGrid{grid-template-columns:1fr}.app{padding-left:12px;padding-right:12px}.header h1{font-size:28px}}
-</style>
+<link rel="stylesheet" href="./styles.css" />
+<title>Nutrition Tracker v3 Beta</title>
 </head>
 <body>
 <div class="app">
-<div class="header"><h1 data-i18n="title">Nutrition Tracker</h1><p id="dateLabel"></p></div>
+  <header class="header">
+    <h1 data-i18n="title">Nutrition Tracker</h1>
+    <p id="dateLabel"></p>
+  </header>
 
-<section id="tab-dashboard" class="section active">
-<div class="card dateCard"><div class="dateRow"><input id="currentDate" type="date"><button class="gray" onclick="goToday()" data-i18n="todayBtn">今天</button></div></div>
-<div class="card summaryCard"><div class="summaryStatus" id="summaryTitle"></div><p id="summaryText"></p></div>
-<div class="card"><div class="dashboardTitle"><h2 data-i18n="dashboard">Dashboard</h2><span data-i18n="rangeHint">理想區間追蹤</span></div><div class="metricGrid" id="metrics"></div></div>
-<div id="mealList"></div>
-</section>
+  <section id="tab-dashboard" class="section active">
+    <div class="card dateCard">
+      <div class="dateRow">
+        <input id="currentDate" type="date">
+        <button class="gray" id="todayBtn" data-i18n="todayBtn">今天</button>
+      </div>
+    </div>
 
-<section id="tab-history" class="section"><div class="card"><h2 data-i18n="history">歷史紀錄</h2><p class="small" data-i18n="historyNote">只顯示有紀錄的日期，點進去查看詳細內容。</p><div id="historyList"></div></div></section>
+    <div class="card summaryCard">
+      <div class="summaryStatus" id="summaryTitle"></div>
+      <p id="summaryText"></p>
+    </div>
 
-<section id="tab-weight" class="section"><div class="card"><h2 data-i18n="weight">體重</h2><label data-i18n="todayWeight">今日體重 kg</label><input id="weightInput" type="number" step="0.1" placeholder="69.5"><br><br><button onclick="saveWeight()" data-i18n="save">儲存</button></div><div class="card"><h2 data-i18n="recentWeight">近期體重</h2><div id="weightList"></div></div></section>
+    <div class="card">
+      <div class="dashboardTitle">
+        <h2 data-i18n="dashboard">Dashboard</h2>
+        <span data-i18n="rangeHint">理想區間追蹤</span>
+      </div>
+      <div class="metricGrid" id="metrics"></div>
+    </div>
 
-<section id="tab-settings" class="section"><div class="card"><h2 data-i18n="settings">設定</h2><label>Language</label><select id="lang" onchange="setLang(this.value)"><option value="zh">中文</option><option value="id">Bahasa Indonesia</option></select><p class="small" data-i18n="rangeNote">每項營養素只需要設定：最低值、理想上限。</p><div id="rangeSettings"></div><br><button onclick="saveRanges()" data-i18n="saveTarget">儲存目標區間</button></div></section>
+    <div id="mealList"></div>
+  </section>
 
-<section id="tab-backup" class="section"><div class="card"><h2 data-i18n="backup">備份</h2><div class="dataStats" id="dataStats"></div><br><button onclick="exportData()" data-i18n="export">匯出 JSON</button><div class="importBox"><label data-i18n="import">匯入 JSON</label><input id="importFile" type="file" accept=".json,application/json" onchange="importData(event)"><p class="small" data-i18n="importNote">選擇之前匯出的 JSON 檔，會覆蓋目前 App 內的資料。</p></div><br><button class="red" onclick="clearAll()" data-i18n="clearAll">清除全部資料</button><p class="small" data-i18n="backupNote">資料儲存在本機瀏覽器，請定期備份。</p></div></section>
+  <section id="tab-history" class="section">
+    <div class="card">
+      <h2 data-i18n="history">歷史紀錄</h2>
+      <p class="small" data-i18n="historyNote">只顯示有紀錄的日期，點進去查看詳細內容。</p>
+      <div id="historyList"></div>
+    </div>
+  </section>
+
+  <section id="tab-weight" class="section">
+    <div class="card">
+      <h2 data-i18n="weight">體重</h2>
+      <label data-i18n="todayWeight">今日體重 kg</label>
+      <input id="weightInput" type="number" step="0.1" placeholder="69.5">
+      <br><br>
+      <button id="saveWeightBtn" data-i18n="save">儲存</button>
+    </div>
+    <div class="card">
+      <h2 data-i18n="recentWeight">近期體重</h2>
+      <div id="weightList"></div>
+    </div>
+  </section>
+
+  <section id="tab-settings" class="section">
+    <div class="card">
+      <h2 data-i18n="settings">設定</h2>
+      <label>Language</label>
+      <select id="langSelect">
+        <option value="zh">中文</option>
+        <option value="id">Bahasa Indonesia</option>
+      </select>
+      <p class="small" data-i18n="rangeNote">每項營養素只需要設定：最低值、理想上限。</p>
+      <div id="rangeSettings"></div>
+      <br>
+      <button id="saveRangesBtn" data-i18n="saveTarget">儲存目標區間</button>
+    </div>
+  </section>
+
+  <section id="tab-backup" class="section">
+    <div class="card">
+      <h2 data-i18n="backup">備份</h2>
+      <div class="dataStats" id="dataStats"></div>
+      <br>
+      <button id="exportBtn" data-i18n="export">匯出 JSON</button>
+      <div class="importBox">
+        <label data-i18n="import">匯入 JSON</label>
+        <input id="importFile" type="file" accept=".json,application/json">
+        <p class="small" data-i18n="importNote">選擇之前匯出的 JSON 檔，會覆蓋目前 App 內的資料。</p>
+      </div>
+      <br>
+      <button class="red" id="clearAllBtn" data-i18n="clearAll">清除全部資料</button>
+      <p class="small" data-i18n="backupNote">資料儲存在本機瀏覽器，請定期備份。</p>
+    </div>
+  </section>
 </div>
 
-<button class="fab" onclick="openSheet()">＋</button>
+<button class="fab" id="openSheetBtn">＋</button>
 <div class="toast" id="toast"></div>
 
-<div class="sheetBg" id="sheetBg" onclick="closeSheet(event)"><div class="sheet" onclick="event.stopPropagation()"><div class="sheetHandle"></div><div class="sheetHead"><h2 data-i18n="addFood">新增食物</h2><button class="gray" onclick="hideSheet()">✕</button></div><input type="hidden" id="editId"><label data-i18n="meal">餐別</label><select id="meal" class="foodInput"><option value="breakfast" data-i18n="breakfast">早餐</option><option value="lunch" data-i18n="lunch">午餐</option><option value="dinner" data-i18n="dinner">晚餐</option><option value="snack" data-i18n="snack">點心</option></select><br><br><label data-i18n="foodName">食物名稱</label><input id="foodName" class="foodInput"><br><br><div class="rangeGrid"><div><label data-i18n="weightG">重量 g</label><input id="foodWeight" class="foodInput" type="number" step="0.1"></div><div><label data-i18n="cal">熱量</label><input id="foodCal" class="foodInput" type="number" step="0.1"></div><div><label data-i18n="protein">蛋白質</label><input id="foodPro" class="foodInput" type="number" step="0.1"></div><div><label data-i18n="carbs">碳水</label><input id="foodCarb" class="foodInput" type="number" step="0.1"></div><div><label data-i18n="fat">脂肪</label><input id="foodFat" class="foodInput" type="number" step="0.1"></div><div><label data-i18n="note">備註</label><input id="foodNote" class="foodInput"></div></div><br><button onclick="saveFood()" data-i18n="add">加入</button></div></div>
+<div class="sheetBg" id="sheetBg">
+  <div class="sheet">
+    <div class="sheetHandle"></div>
+    <div class="sheetHead">
+      <h2 data-i18n="addFood">新增食物</h2>
+      <button class="gray" id="closeSheetBtn">✕</button>
+    </div>
+    <input type="hidden" id="editId">
 
-<div class="bottomNav"><div class="bottomNavInner"><button class="navBtn active" onclick="showTab('dashboard',this)" data-i18n="navHome">首頁</button><button class="navBtn" onclick="showTab('history',this)" data-i18n="navHistory">歷史</button><button class="navBtn" onclick="showTab('weight',this)" data-i18n="navWeight">體重</button><button class="navBtn" onclick="showTab('settings',this)" data-i18n="navSettings">設定</button><button class="navBtn" onclick="showTab('backup',this)" data-i18n="navBackup">備份</button></div></div>
+    <label data-i18n="meal">餐別</label>
+    <select id="meal" class="foodInput">
+      <option value="breakfast" data-i18n="breakfast">早餐</option>
+      <option value="lunch" data-i18n="lunch">午餐</option>
+      <option value="dinner" data-i18n="dinner">晚餐</option>
+      <option value="snack" data-i18n="snack">點心</option>
+    </select>
 
-<script>
-const I={zh:{title:"Nutrition Tracker",todayBtn:"今天",dashboard:"Dashboard",rangeHint:"理想區間追蹤",history:"歷史紀錄",allRecords:"所有日期",historyNote:"只顯示有紀錄的日期，點進去查看詳細內容。",today:"今天",yesterday:"昨天",dayBefore:"前天",weight:"體重",todayWeight:"今日體重 kg",save:"儲存",recentWeight:"近期體重",settings:"設定",rangeNote:"每項營養素只需要設定：最低值、理想上限。",min:"最低值",idealMax:"理想上限",cal:"熱量",protein:"蛋白質",carbs:"碳水",fat:"脂肪",saveTarget:"儲存目標區間",backup:"備份",export:"匯出 JSON",import:"匯入 JSON",importNote:"選擇之前匯出的 JSON 檔，會覆蓋目前 App 內的資料。",confirmImport:"匯入會覆蓋目前資料，確定繼續？",imported:"匯入完成",importError:"匯入失敗，檔案格式不正確",recordDays:"紀錄天數",foodEntries:"食物筆數",weightEntries:"體重筆數",clearAll:"清除全部資料",backupNote:"資料儲存在本機瀏覽器，請定期備份。",addFood:"新增食物",meal:"餐別",breakfast:"早餐",lunch:"午餐",dinner:"晚餐",snack:"點心",foodName:"食物名稱",weightG:"重量 g",note:"備註",add:"加入",navHome:"首頁",navHistory:"歷史",navWeight:"體重",navSettings:"設定",navBackup:"備份",need:"還差",canEat:"還可攝取",overBy:"超出理想",ideal:"理想",low:"偏低",high:"偏高",excellent:"🟢 今日狀態理想",good:"🟡 今日仍需補足",attention:"🟠 今日有項目偏高",allIdeal:"所有營養素都落在理想區間。",needFocus:"優先補足",tooHigh:"超出理想區間",edit:"編輯",del:"刪除",noFood:"尚未新增食物",confirmDel:"確定刪除？",confirmAll:"確定清除全部資料？",noWeight:"尚未紀錄體重",added:"已新增到",updated:"已更新",items:"項",emptyDay:"這天尚無飲食紀錄"},id:{title:"Nutrition Tracker",todayBtn:"Hari ini",dashboard:"Dashboard",rangeHint:"Pantauan rentang ideal",history:"Riwayat",allRecords:"Semua tanggal",historyNote:"Hanya menampilkan tanggal yang memiliki catatan. Ketuk untuk melihat detail.",today:"Hari ini",yesterday:"Kemarin",dayBefore:"2 hari lalu",weight:"Berat",todayWeight:"Berat hari ini kg",save:"Simpan",recentWeight:"Berat terbaru",settings:"Pengaturan",rangeNote:"Untuk tiap nutrisi, cukup atur: minimum dan batas ideal.",min:"Minimum",idealMax:"Batas ideal",cal:"Kalori",protein:"Protein",carbs:"Karbo",fat:"Lemak",saveTarget:"Simpan target",backup:"Cadangan",export:"Ekspor JSON",import:"Impor JSON",importNote:"Pilih file JSON yang pernah diekspor. Data saat ini akan diganti.",confirmImport:"Impor akan mengganti data saat ini. Lanjutkan?",imported:"Impor selesai",importError:"Impor gagal, format file tidak benar",recordDays:"Jumlah hari",foodEntries:"Catatan makanan",weightEntries:"Catatan berat",clearAll:"Hapus semua data",backupNote:"Data tersimpan di browser perangkat ini. Sebaiknya lakukan cadangan secara rutin.",addFood:"Tambah makanan",meal:"Waktu makan",breakfast:"Sarapan",lunch:"Makan siang",dinner:"Makan malam",snack:"Camilan",foodName:"Nama makanan",weightG:"Berat g",note:"Catatan",add:"Tambah",navHome:"Beranda",navHistory:"Riwayat",navWeight:"Berat",navSettings:"Pengaturan",navBackup:"Cadangan",need:"Kurang",canEat:"Masih bisa",overBy:"Melebihi ideal",ideal:"Ideal",low:"Rendah",high:"Tinggi",excellent:"🟢 Kondisi hari ini ideal",good:"🟡 Masih perlu dilengkapi",attention:"🟠 Ada yang terlalu tinggi",allIdeal:"Semua nutrisi berada dalam rentang ideal.",needFocus:"Prioritaskan",tooHigh:"Melebihi rentang ideal",edit:"Edit",del:"Hapus",noFood:"Belum ada makanan",confirmDel:"Yakin hapus?",confirmAll:"Yakin hapus semua data?",noWeight:"Belum ada catatan berat",added:"Ditambahkan ke",updated:"Diperbarui",items:"item",emptyDay:"Belum ada catatan makan di tanggal ini"}};
-const KEY="nutrition_tracker_v2_4";let old=JSON.parse(localStorage.getItem("nutrition_tracker_v2_3")||localStorage.getItem("nutrition_tracker_v2_2")||localStorage.getItem("nutrition_tracker_v2_1")||localStorage.getItem("nutrition_tracker_v2")||"{}");let S=JSON.parse(localStorage.getItem(KEY)||"{}");S.lang ||= old.lang || "zh";S.days ||= old.days || {};S.weights ||= old.weights || {};S.collapsed ||= old.collapsed || {};S.lastMeal ||= "lunch";S.ranges ||= {cal:{min:2500,idealMax:2800,unit:"kcal"},pro:{min:140,idealMax:160,unit:"g"},carb:{min:320,idealMax:380,unit:"g"},fat:{min:60,idealMax:80,unit:"g"}};["cal","pro","carb","fat"].forEach(k=>{if(old.ranges&&old.ranges[k]){S.ranges[k].min=old.ranges[k].min;S.ranges[k].idealMax=old.ranges[k].idealMax}});let D=new Date().toISOString().slice(0,10);
-function t(k){return I[S.lang][k]||k}function save(){localStorage.setItem(KEY,JSON.stringify(S))}function num(id){return Number(document.getElementById(id).value)||0}function day(date=D){S.days[date] ||= []; return S.days[date]}function defs(){return [{key:"cal",label:t("cal"),field:"cal",unit:"kcal"},{key:"pro",label:t("protein"),field:"pro",unit:"g"},{key:"carb",label:t("carbs"),field:"carb",unit:"g"},{key:"fat",label:t("fat"),field:"fat",unit:"g"}]}
-function applyLang(){document.documentElement.lang=S.lang==="id"?"id":"zh-Hant";document.querySelectorAll("[data-i18n]").forEach(e=>e.textContent=t(e.dataset.i18n));lang.value=S.lang;buildRangeSettings();render()}function setLang(v){S.lang=v;save();applyLang()}
-function showTab(name,btn){document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById("tab-"+name).classList.add("active");document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");renderHistory();renderStats()}
-function goToday(){D=new Date().toISOString().slice(0,10);currentDate.value=D;render()}currentDate.addEventListener("change",e=>{D=e.target.value;render()});
-function dateOffset(n){let d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
-function analyze(v,r){if(v<r.min)return{level:"low",badge:t("low"),need:r.min-v,can:r.idealMax-v,over:0};if(v<=r.idealMax)return{level:"ideal",badge:t("ideal"),need:0,can:r.idealMax-v,over:0};return{level:"high",badge:t("high"),need:0,can:0,over:v-r.idealMax}}
-function totalFor(date){let out={cal:0,pro:0,carb:0,fat:0};(S.days[date]||[]).forEach(x=>{out.cal+=x.cal;out.pro+=x.pro;out.carb+=x.carb;out.fat+=x.fat});return out}
-function metric(d,total){const r=S.ranges[d.key],a=analyze(total,r),pct=r.idealMax?Math.min(total/r.idealMax*100,100):0;return `<div class="metric"><div class="metricHead"><div class="metricName">${d.label}</div><div class="metricValue">${total.toFixed(1)} ${r.unit}</div></div><div class="bar"><div class="fill ${a.level}" style="width:${pct}%"></div></div><div class="rangeText">${r.min}–${r.idealMax} ${r.unit}</div><div class="infoRow"><div class="miniBox"><div>${t("need")}</div><div>${a.need.toFixed(1)}</div></div><div class="miniBox"><div>${a.level==="high"?t("overBy"):t("canEat")}</div><div>${a.level==="high"?a.over.toFixed(1):a.can.toFixed(1)}</div></div></div><span class="badge ${a.level}">${a.badge}</span></div>`}
-function renderSummary(ts){let res=defs().map(d=>({d,a:analyze(ts[d.field],S.ranges[d.key])}));let low=res.filter(x=>x.a.level==="low"),high=res.filter(x=>x.a.level==="high");if(low.length){summaryTitle.textContent=t("good");summaryText.textContent=`${t("needFocus")}：${low.map(x=>x.d.label).join("、")}`}else if(high.length){summaryTitle.textContent=t("attention");summaryText.textContent=`${t("tooHigh")}：${high.map(x=>x.d.label).join("、")}`}else{summaryTitle.textContent=t("excellent");summaryText.textContent=t("allIdeal")}}
-function mealTotals(items){let o={cal:0,pro:0,carb:0,fat:0};items.forEach(x=>{o.cal+=x.cal;o.pro+=x.pro;o.carb+=x.carb;o.fat+=x.fat});return o}
-function render(){currentDate.value=D;dateLabel.textContent=D;let ts=totalFor(D);renderSummary(ts);metrics.innerHTML=defs().map(d=>metric(d,ts[d.field])).join("");let meals=["breakfast","lunch","dinner","snack"],list=day(D),html="";meals.forEach(m=>{let items=list.filter(x=>x.meal===m); if(S.collapsed[D+"_"+m]===undefined) S.collapsed[D+"_"+m]=true; let collapsed=S.collapsed[D+"_"+m], mt=mealTotals(items);html+=`<div class="card"><div class="mealTitle" onclick="toggleMeal('${m}')"><span>${collapsed?"▶":"▼"} ${t(m)} (${items.length})</span></div><div class="mealSummary">${mt.cal.toFixed(0)} kcal｜P ${mt.pro.toFixed(1)}｜C ${mt.carb.toFixed(1)}｜F ${mt.fat.toFixed(1)}</div>`;if(!collapsed){if(!items.length)html+=`<p class="small">${t("noFood")}</p>`;items.forEach(x=>{html+=`<div class="foodCard"><div class="foodName">${x.name}</div><div class="foodSub">${x.weight||0} g ${x.note?"｜"+x.note:""}</div><div class="macroRow"><span class="pill">${x.cal} kcal</span><span class="pill">P ${x.pro}</span><span class="pill">C ${x.carb}</span><span class="pill">F ${x.fat}</span></div><div class="actions"><button class="gray" onclick="editFood('${x.id}')">${t("edit")}</button><button class="red" onclick="deleteFood('${x.id}')">${t("del")}</button></div></div>`})}html+="</div>"});mealList.innerHTML=html;let ws=Object.entries(S.weights).sort().reverse().slice(0,10);weightList.innerHTML=ws.length?ws.map(([d,w])=>`${d}：${w} kg`).join("<br>"):t("noWeight");renderHistory();renderStats();save()}
-function renderHistory(){let dates=Object.keys(S.days).filter(d=>(S.days[d]||[]).length).sort().reverse();historyList.innerHTML=dates.length?dates.map(d=>historyRow(d)).join(""):`<p class="small">${t("emptyDay")}</p>`}
-function historyRow(date){let items=S.days[date]||[],ts=totalFor(date);return `<div class="historyItem" onclick="openDate('${date}')"><div><div class="historyDate">${date}</div><div class="historyMeta">${ts.cal.toFixed(0)} kcal｜P ${ts.pro.toFixed(1)}｜${items.length} ${t("items")}</div></div><div class="chevron">›</div></div>`}')"><div><div class="historyDate">${label}</div><div class="historyMeta">${date}｜${items.length} ${t("items")}｜${ts.cal.toFixed(0)} kcal｜P ${ts.pro.toFixed(1)}</div></div><div class="historyBadge">Open</div></div>`}
-function openDate(date){D=date;currentDate.value=D;document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));document.getElementById("tab-dashboard").classList.add("active");document.querySelectorAll(".navBtn").forEach(b=>b.classList.remove("active"));document.querySelector(".navBtn").classList.add("active");render()}
-function buildRangeSettings(){rangeSettings.innerHTML=defs().map(d=>{let r=S.ranges[d.key];return `<div class="settingBlock"><h3>${d.label}</h3><div class="rangeGrid"><div><label>${t("min")}</label><input id="range_${d.key}_min" type="number" step="0.1" value="${r.min}"></div><div><label>${t("idealMax")}</label><input id="range_${d.key}_idealMax" type="number" step="0.1" value="${r.idealMax}"></div></div></div>`}).join("")}
-function saveRanges(){defs().forEach(d=>{S.ranges[d.key].min=num(`range_${d.key}_min`);S.ranges[d.key].idealMax=num(`range_${d.key}_idealMax`)});save();render();showToast(t("updated"))}
-function toggleMeal(m){S.collapsed[D+"_"+m]=!S.collapsed[D+"_"+m];save();render()}function openSheet(){editId.value="";["foodName","foodWeight","foodCal","foodPro","foodCarb","foodFat","foodNote"].forEach(id=>document.getElementById(id).value="");meal.value=S.lastMeal||"lunch";sheetBg.style.display="block";setTimeout(()=>foodName.focus(),100)}function hideSheet(){sheetBg.style.display="none"}function closeSheet(e){if(e.target.id==="sheetBg")hideSheet()}
-function showToast(msg){toast.textContent=msg;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),1800)}
-function saveFood(){let isEdit=!!editId.value;let id=editId.value || crypto.randomUUID();let obj={id,meal:meal.value,name:foodName.value||"Food",weight:num("foodWeight"),cal:num("foodCal"),pro:num("foodPro"),carb:num("foodCarb"),fat:num("foodFat"),note:foodNote.value};let arr=day(D),i=arr.findIndex(x=>x.id===id);if(i>=0)arr[i]=obj;else arr.push(obj);S.lastMeal=meal.value;save();hideSheet();render();showToast(isEdit?t("updated"):`${t("added")} ${t(obj.meal)}`)}
-function editFood(id){let x=day(D).find(a=>a.id===id);if(!x)return;editId.value=x.id;meal.value=x.meal;foodName.value=x.name;foodWeight.value=x.weight;foodCal.value=x.cal;foodPro.value=x.pro;foodCarb.value=x.carb;foodFat.value=x.fat;foodNote.value=x.note||"";sheetBg.style.display="block"}function deleteFood(id){if(confirm(t("confirmDel"))){S.days[D]=day(D).filter(x=>x.id!==id);save();render()}}
-function saveWeight(){S.weights[D]=num("weightInput");weightInput.value="";save();render();showToast(t("updated"))}function exportData(){let payload={...S,exportedAt:new Date().toISOString(),appVersion:"2.4"};let blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="nutrition_tracker_backup.json";a.click();URL.revokeObjectURL(url)}
-function renderStats(){if(!document.getElementById("dataStats"))return;let dates=Object.keys(S.days).filter(d=>(S.days[d]||[]).length);let foodCount=dates.reduce((n,d)=>n+(S.days[d]||[]).length,0);let weightCount=Object.keys(S.weights).length;dataStats.innerHTML=`<div class="statBox"><div>${t("recordDays")}</div><div>${dates.length}</div></div><div class="statBox"><div>${t("foodEntries")}</div><div>${foodCount}</div></div><div class="statBox"><div>${t("weightEntries")}</div><div>${weightCount}</div></div><div class="statBox"><div>Version</div><div>2.4</div></div>`}
-function importData(e){let file=e.target.files[0];if(!file)return;if(!confirm(t("confirmImport"))){e.target.value="";return}let reader=new FileReader();reader.onload=()=>{try{let data=JSON.parse(reader.result);if(!data.days||!data.ranges)throw new Error("bad format");S.lang=data.lang||S.lang;S.days=data.days||{};S.weights=data.weights||{};S.collapsed=data.collapsed||{};S.lastMeal=data.lastMeal||"lunch";S.ranges=data.ranges||S.ranges;save();e.target.value="";applyLang();showToast(t("imported"))}catch(err){showToast(t("importError"))}};reader.readAsText(file)}
-function clearAll(){if(confirm(t("confirmAll"))){localStorage.removeItem(KEY);location.reload()}}
-document.addEventListener("keydown",e=>{if(e.key==="Escape")hideSheet()});document.querySelectorAll(".foodInput").forEach((el,i,arr)=>{el.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(i<arr.length-1)arr[i+1].focus();else saveFood()}})});
-buildRangeSettings();applyLang();save();if("serviceWorker"in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"))}
-</script>
-</body></html>
+    <br><br>
+    <label data-i18n="foodName">食物名稱</label>
+    <input id="foodName" class="foodInput">
+
+    <br><br>
+    <div class="rangeGrid">
+      <div><label data-i18n="weightG">重量 g</label><input id="foodWeight" class="foodInput" type="number" step="0.1"></div>
+      <div><label data-i18n="cal">熱量</label><input id="foodCal" class="foodInput" type="number" step="0.1"></div>
+      <div><label data-i18n="protein">蛋白質</label><input id="foodPro" class="foodInput" type="number" step="0.1"></div>
+      <div><label data-i18n="carbs">碳水</label><input id="foodCarb" class="foodInput" type="number" step="0.1"></div>
+      <div><label data-i18n="fat">脂肪</label><input id="foodFat" class="foodInput" type="number" step="0.1"></div>
+      <div><label data-i18n="note">備註</label><input id="foodNote" class="foodInput"></div>
+    </div>
+    <br>
+    <button id="saveFoodBtn" data-i18n="add">加入</button>
+  </div>
+</div>
+
+<nav class="bottomNav">
+  <div class="bottomNavInner">
+    <button class="navBtn active" data-tab="dashboard" data-i18n="navHome">首頁</button>
+    <button class="navBtn" data-tab="history" data-i18n="navHistory">歷史</button>
+    <button class="navBtn" data-tab="weight" data-i18n="navWeight">體重</button>
+    <button class="navBtn" data-tab="settings" data-i18n="navSettings">設定</button>
+    <button class="navBtn" data-tab="backup" data-i18n="navBackup">備份</button>
+  </div>
+</nav>
+
+<script src="./i18n.js"></script>
+<script src="./storage.js"></script>
+<script src="./utils.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

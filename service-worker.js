@@ -1,5 +1,27 @@
-const CACHE_NAME="nutrition-tracker-v2-4";
-const ASSETS=["./","./index.html","./manifest.webmanifest","./icon-192.png","./icon-512.png"];
-self.addEventListener("install",e=>{e.waitUntil(caches.open(CACHE_NAME).then(c=>c.addAll(ASSETS)));self.skipWaiting();});
-self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)))));self.clients.claim();});
-self.addEventListener("fetch",e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)));});
+const CACHE_NAME="nutrition-tracker-v3-beta";
+const ASSETS=[
+  "./",
+  "./index.html",
+  "./styles.css",
+  "./i18n.js",
+  "./storage.js",
+  "./utils.js",
+  "./app.js",
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png"
+];
+
+self.addEventListener("install",event=>{
+  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)));
+  self.skipWaiting();
+});
+
+self.addEventListener("activate",event=>{
+  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key!==CACHE_NAME).map(key=>caches.delete(key)))));
+  self.clients.claim();
+});
+
+self.addEventListener("fetch",event=>{
+  event.respondWith(caches.match(event.request).then(response=>response||fetch(event.request)));
+});
