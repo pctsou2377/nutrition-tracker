@@ -1,7 +1,7 @@
 {
-  "name": "營養追蹤 PWA",
-  "short_name": "營養追蹤",
-  "description": "通用營養、熱量、三大營養素與體重追蹤工具",
+  "name": "Nutrition Tracker PWA",
+  "short_name": "Nutrition",
+  "description": "Bilingual nutrition and body weight tracker",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f3f4f6",

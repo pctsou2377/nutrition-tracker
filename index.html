@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#2563eb" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="營養追蹤" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="apple-touch-icon" href="./icon-192.png" />
-  <title>營養追蹤 PWA</title>
+  <title>Nutrition Tracker PWA</title>
   <style>
     :root{--blue:#2563eb;--green:#16a34a;--red:#dc2626;--bg:#f3f4f6;--card:#fff;--text:#111827;--muted:#6b7280}
     body{font-family:Arial,"Noto Sans TC",sans-serif;background:var(--bg);margin:0;color:var(--text)}
-    header{background:var(--blue);color:#fff;padding:18px 16px;text-align:center;position:sticky;top:0;z-index:10}
+    header{background:var(--blue);color:#fff;padding:16px;text-align:center;position:sticky;top:0;z-index:10}
     header h1{margin:0;font-size:22px}
     main{max-width:920px;margin:auto;padding:16px}
+    .topbar{display:flex;gap:8px;justify-content:center;margin-top:10px}
+    .topbar button{max-width:120px;background:#ffffff;color:#2563eb}
     .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
     label{font-weight:700;font-size:14px;margin-bottom:4px;display:block}
@@ -40,64 +41,68 @@
 </head>
 <body>
 <header>
-  <h1>營養追蹤 PWA</h1>
+  <h1 data-i18n="appTitle">營養追蹤 PWA</h1>
+  <div class="topbar">
+    <button onclick="setLang('zh')">中文</button>
+    <button onclick="setLang('id')">Indonesia</button>
+  </div>
 </header>
 
 <main>
   <div class="tabs">
-    <button class="active" onclick="showTab('today', this)">今日</button>
-    <button onclick="showTab('weight', this)">體重</button>
-    <button onclick="showTab('backup', this)">備份</button>
+    <button class="active" onclick="showTab('today', this)" data-i18n="tabToday">今日</button>
+    <button onclick="showTab('weight', this)" data-i18n="tabWeight">體重</button>
+    <button onclick="showTab('backup', this)" data-i18n="tabBackup">備份</button>
   </div>
 
   <section id="today" class="section active">
     <div class="card">
-      <h2>每日目標</h2>
+      <h2 data-i18n="dailyTarget">每日目標</h2>
       <div class="grid">
-        <div><label>目標</label><select id="goal"><option value="fatloss">減脂</option><option value="muscle">增肌</option><option value="maintain">維持體重</option></select></div>
-        <div><label>熱量 kcal</label><input id="tCal" type="number" value="1800"></div>
-        <div><label>蛋白質 g</label><input id="tPro" type="number" value="100"></div>
-        <div><label>碳水 g</label><input id="tCarb" type="number" value="200"></div>
-        <div><label>脂肪 g</label><input id="tFat" type="number" value="55"></div>
+        <div><label data-i18n="goal">目標</label><select id="goal"><option value="fatloss" data-i18n="fatloss">減脂</option><option value="muscle" data-i18n="muscle">增肌</option><option value="maintain" data-i18n="maintain">維持體重</option></select></div>
+        <div><label data-i18n="calories">熱量 kcal</label><input id="tCal" type="number" value="1800"></div>
+        <div><label data-i18n="protein">蛋白質 g</label><input id="tPro" type="number" value="100"></div>
+        <div><label data-i18n="carbs">碳水 g</label><input id="tCarb" type="number" value="200"></div>
+        <div><label data-i18n="fat">脂肪 g</label><input id="tFat" type="number" value="55"></div>
       </div>
-      <p class="muted">目標會自動儲存在這台裝置的瀏覽器中。</p>
+      <p class="muted" data-i18n="targetNote">目標會自動儲存在這台裝置的瀏覽器中。</p>
     </div>
 
     <div class="card">
-      <h2>新增食物</h2>
+      <h2 data-i18n="addFood">新增食物</h2>
       <div class="grid">
-        <input id="name" placeholder="食物名稱">
-        <input id="cal" type="number" placeholder="熱量 kcal">
-        <input id="pro" type="number" placeholder="蛋白質 g">
-        <input id="carb" type="number" placeholder="碳水 g">
-        <input id="fat" type="number" placeholder="脂肪 g">
+        <input id="name" data-placeholder="foodName" placeholder="食物名稱">
+        <input id="cal" type="number" data-placeholder="calPlaceholder" placeholder="熱量 kcal">
+        <input id="pro" type="number" data-placeholder="proPlaceholder" placeholder="蛋白質 g">
+        <input id="carb" type="number" data-placeholder="carbPlaceholder" placeholder="碳水 g">
+        <input id="fat" type="number" data-placeholder="fatPlaceholder" placeholder="脂肪 g">
       </div>
       <br>
-      <button onclick="addFood()">加入今日飲食</button>
+      <button onclick="addFood()" data-i18n="addToday">加入今日飲食</button>
     </div>
 
     <div class="card">
-      <h2>今日 Dashboard</h2>
+      <h2 data-i18n="dashboard">今日 Dashboard</h2>
       <div id="stats"></div>
     </div>
 
     <div class="card">
-      <h2>今日飲食紀錄</h2>
+      <h2 data-i18n="todayFoodLog">今日飲食紀錄</h2>
       <table>
-        <thead><tr><th>食物</th><th>熱量</th><th>P</th><th>C</th><th>F</th><th></th></tr></thead>
+        <thead><tr><th data-i18n="food">食物</th><th data-i18n="calShort">熱量</th><th>P</th><th>C</th><th>F</th><th></th></tr></thead>
         <tbody id="foods"></tbody>
       </table>
       <br>
-      <button class="red" onclick="clearFoods()">清空今日飲食</button>
+      <button class="red" onclick="clearFoods()" data-i18n="clearToday">清空今日飲食</button>
     </div>
   </section>
 
   <section id="weight" class="section">
     <div class="card">
-      <h2>體重紀錄</h2>
+      <h2 data-i18n="weightRecord">體重紀錄</h2>
       <div class="grid">
-        <input id="weightInput" type="number" step="0.1" placeholder="今日體重 kg">
-        <button onclick="saveWeight()">儲存今日體重</button>
+        <input id="weightInput" type="number" step="0.1" data-placeholder="weightPlaceholder" placeholder="今日體重 kg">
+        <button onclick="saveWeight()" data-i18n="saveWeight">儲存今日體重</button>
       </div>
       <br>
       <div id="weightList"></div>
@@ -106,25 +111,72 @@
 
   <section id="backup" class="section">
     <div class="card">
-      <h2>資料備份</h2>
+      <h2 data-i18n="backup">資料備份</h2>
       <div class="grid">
-        <button class="gray" onclick="exportData()">匯出 JSON 備份</button>
-        <button class="red" onclick="clearAll()">清除全部資料</button>
+        <button class="gray" onclick="exportData()" data-i18n="exportJson">匯出 JSON 備份</button>
+        <button class="red" onclick="clearAll()" data-i18n="clearAll">清除全部資料</button>
       </div>
-      <p class="muted">資料儲存在本機瀏覽器。更換手機、清除 Safari 網站資料或使用無痕模式，資料可能消失。建議定期匯出備份。</p>
+      <p class="muted" data-i18n="backupNote">資料儲存在本機瀏覽器。更換手機、清除 Safari 網站資料或使用無痕模式，資料可能消失。建議定期匯出備份。</p>
     </div>
   </section>
 </main>
 
 <script>
-const storeKey = "nutrition_pwa_v1";
+const i18n = {
+  zh: {
+    appTitle:"營養追蹤 PWA", tabToday:"今日", tabWeight:"體重", tabBackup:"備份",
+    dailyTarget:"每日目標", goal:"目標", fatloss:"減脂", muscle:"增肌", maintain:"維持體重",
+    calories:"熱量 kcal", protein:"蛋白質 g", carbs:"碳水 g", fat:"脂肪 g",
+    targetNote:"目標會自動儲存在這台裝置的瀏覽器中。",
+    addFood:"新增食物", foodName:"食物名稱，例如：雞胸肉、白飯、豆漿",
+    calPlaceholder:"熱量 kcal", proPlaceholder:"蛋白質 g", carbPlaceholder:"碳水 g", fatPlaceholder:"脂肪 g",
+    addToday:"加入今日飲食", dashboard:"今日 Dashboard", todayFoodLog:"今日飲食紀錄",
+    food:"食物", calShort:"熱量", clearToday:"清空今日飲食",
+    weightRecord:"體重紀錄", weightPlaceholder:"今日體重 kg", saveWeight:"儲存今日體重",
+    backup:"資料備份", exportJson:"匯出 JSON 備份", clearAll:"清除全部資料",
+    backupNote:"資料儲存在本機瀏覽器。更換手機、清除 Safari 網站資料或使用無痕模式，資料可能消失。建議定期匯出備份。",
+    remaining:"剩餘", over:"已超過", noFood:"尚未新增食物", noWeight:"尚未紀錄體重",
+    delete:"刪", unnamed:"未命名",
+    confirmClearFood:"確定要清空今日飲食嗎？",
+    confirmClearAll:"確定要清除全部資料嗎？這個動作不能復原。"
+  },
+  id: {
+    appTitle:"Pelacak Nutrisi PWA", tabToday:"Hari Ini", tabWeight:"Berat", tabBackup:"Cadangan",
+    dailyTarget:"Target Harian", goal:"Tujuan", fatloss:"Turun Lemak", muscle:"Naik Otot", maintain:"Jaga Berat",
+    calories:"Kalori kcal", protein:"Protein g", carbs:"Karbo g", fat:"Lemak g",
+    targetNote:"Target akan tersimpan otomatis di browser perangkat ini.",
+    addFood:"Tambah Makanan", foodName:"Nama makanan, contoh: dada ayam, nasi, susu kedelai",
+    calPlaceholder:"Kalori kcal", proPlaceholder:"Protein g", carbPlaceholder:"Karbo g", fatPlaceholder:"Lemak g",
+    addToday:"Tambahkan ke Catatan Hari Ini", dashboard:"Dashboard Hari Ini", todayFoodLog:"Catatan Makan Hari Ini",
+    food:"Makanan", calShort:"Kalori", clearToday:"Hapus Catatan Hari Ini",
+    weightRecord:"Catatan Berat Badan", weightPlaceholder:"Berat hari ini kg", saveWeight:"Simpan Berat Hari Ini",
+    backup:"Cadangan Data", exportJson:"Ekspor Cadangan JSON", clearAll:"Hapus Semua Data",
+    backupNote:"Data disimpan di browser perangkat ini. Jika ganti perangkat, hapus data Safari, atau memakai mode privat, data bisa hilang. Sebaiknya ekspor cadangan secara rutin.",
+    remaining:"Sisa", over:"Melebihi", noFood:"Belum ada makanan", noWeight:"Belum ada catatan berat",
+    delete:"Hapus", unnamed:"Tanpa nama",
+    confirmClearFood:"Yakin ingin menghapus catatan makan hari ini?",
+    confirmClearAll:"Yakin ingin menghapus semua data? Tindakan ini tidak bisa dibatalkan."
+  }
+};
+
+const storeKey = "nutrition_pwa_bilingual_v1_1";
 let state = JSON.parse(localStorage.getItem(storeKey) || "{}");
 state.foods ||= [];
 state.weights ||= [];
 state.targets ||= {goal:"fatloss", cal:1800, pro:100, carb:200, fat:55};
+state.lang ||= "zh";
 
+function t(key){ return i18n[state.lang][key] || i18n.zh[key] || key; }
 function save(){ localStorage.setItem(storeKey, JSON.stringify(state)); }
 function val(id){ return Number(document.getElementById(id).value) || 0; }
+
+function applyLang(){
+  document.documentElement.lang = state.lang === "id" ? "id" : "zh-Hant";
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = t(el.dataset.i18n));
+  document.querySelectorAll("[data-placeholder]").forEach(el => el.placeholder = t(el.dataset.placeholder));
+  render();
+}
+function setLang(lang){ state.lang = lang; save(); applyLang(); }
 
 function loadTargets(){
   document.getElementById("goal").value = state.targets.goal;
@@ -150,9 +202,9 @@ function showTab(id, btn){
 
 function addFood(){
   state.foods.push({
-    n: document.getElementById("name").value || "未命名",
+    n: document.getElementById("name").value || t("unnamed"),
     c: val("cal"), p: val("pro"), cb: val("carb"), f: val("fat"),
-    date: new Date().toLocaleDateString("zh-TW")
+    date: new Date().toLocaleDateString(state.lang === "id" ? "id-ID" : "zh-TW")
   });
   ["name","cal","pro","carb","fat"].forEach(i=>document.getElementById(i).value="");
   save(); render();
@@ -160,7 +212,7 @@ function addFood(){
 
 function deleteFood(i){ state.foods.splice(i,1); save(); render(); }
 function clearFoods(){
-  if(confirm("確定要清空今日飲食嗎？")){
+  if(confirm(t("confirmClearFood"))){
     state.foods = [];
     save(); render();
   }
@@ -169,7 +221,7 @@ function clearFoods(){
 function saveWeight(){
   const w = val("weightInput");
   if(!w) return;
-  state.weights.push({d:new Date().toLocaleDateString("zh-TW"), w});
+  state.weights.push({d:new Date().toLocaleDateString(state.lang === "id" ? "id-ID" : "zh-TW"), w});
   document.getElementById("weightInput").value="";
   save(); render();
 }
@@ -177,7 +229,7 @@ function saveWeight(){
 function bar(title,total,target,unit){
   const pct = target > 0 ? Math.min(total / target * 100, 100) : 0;
   const remain = target - total;
-  const status = remain >= 0 ? `<span class="ok">剩餘 ${remain.toFixed(1)} ${unit}</span>` : `<span class="over">已超過 ${Math.abs(remain).toFixed(1)} ${unit}</span>`;
+  const status = remain >= 0 ? `<span class="ok">${t("remaining")} ${remain.toFixed(1)} ${unit}</span>` : `<span class="over">${t("over")} ${Math.abs(remain).toFixed(1)} ${unit}</span>`;
   return `<div><b>${title}</b>：${total.toFixed(1)} / ${target} ${unit}<div class="progress"><div class="fill" style="width:${pct}%"></div></div>${status}</div><br>`;
 }
 
@@ -185,17 +237,17 @@ function render(){
   let tc=0,tp=0,tcb=0,tf=0, rows="";
   state.foods.forEach((x,i)=>{
     tc+=x.c; tp+=x.p; tcb+=x.cb; tf+=x.f;
-    rows += `<tr><td>${x.n}</td><td>${x.c}</td><td>${x.p}</td><td>${x.cb}</td><td>${x.f}</td><td><button class="red smallbtn" onclick="deleteFood(${i})">刪</button></td></tr>`;
+    rows += `<tr><td>${x.n}</td><td>${x.c}</td><td>${x.p}</td><td>${x.cb}</td><td>${x.f}</td><td><button class="red smallbtn" onclick="deleteFood(${i})">${t("delete")}</button></td></tr>`;
   });
-  document.getElementById("foods").innerHTML = rows || `<tr><td colspan="6">尚未新增食物</td></tr>`;
+  document.getElementById("foods").innerHTML = rows || `<tr><td colspan="6">${t("noFood")}</td></tr>`;
   document.getElementById("stats").innerHTML =
-    bar("熱量",tc,state.targets.cal,"kcal")+
-    bar("蛋白質",tp,state.targets.pro,"g")+
-    bar("碳水",tcb,state.targets.carb,"g")+
-    bar("脂肪",tf,state.targets.fat,"g");
+    bar(t("calShort"),tc,state.targets.cal,"kcal")+
+    bar(t("protein"),tp,state.targets.pro,"g")+
+    bar(t("carbs"),tcb,state.targets.carb,"g")+
+    bar(t("fat"),tf,state.targets.fat,"g");
   document.getElementById("weightList").innerHTML = state.weights.length
     ? state.weights.slice().reverse().map(x=>`${x.d}：${x.w} kg`).join("<br>")
-    : "尚未紀錄體重";
+    : t("noWeight");
 }
 
 function exportData(){
@@ -207,16 +259,16 @@ function exportData(){
 }
 
 function clearAll(){
-  if(confirm("確定要清除全部資料嗎？這個動作不能復原。")){
+  if(confirm(t("confirmClearAll"))){
     localStorage.removeItem(storeKey);
-    state = {foods:[],weights:[],targets:{goal:"fatloss",cal:1800,pro:100,carb:200,fat:55}};
-    loadTargets(); render();
+    state = {foods:[],weights:[],targets:{goal:"fatloss",cal:1800,pro:100,carb:200,fat:55},lang:"zh"};
+    loadTargets(); applyLang();
   }
 }
 
 ["goal","tCal","tPro","tCarb","tFat"].forEach(id=>document.getElementById(id).addEventListener("input",updateTargets));
 loadTargets();
-render();
+applyLang();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
