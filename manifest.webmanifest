@@ -1,7 +1,7 @@
 {
-  "name": "Nutrition Tracker v3.1",
+  "name": "Nutrition Tracker v3.2",
   "short_name": "Nutrition",
-  "description": "Nutrition tracker PWA with safer JSON import",
+  "description": "Nutrition tracker PWA with weight analytics",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#f5f5f7",

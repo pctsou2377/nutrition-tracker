@@ -9,7 +9,7 @@
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="apple-touch-icon" href="./icon-192.png" />
 <link rel="stylesheet" href="./styles.css" />
-<title>Nutrition Tracker v3.1</title>
+<title>Nutrition Tracker v3.2</title>
 </head>
 <body>
 <div class="app">
@@ -58,6 +58,35 @@
       <br><br>
       <button id="saveWeightBtn" data-i18n="save">儲存</button>
     </div>
+
+    <div class="card">
+      <div class="dashboardTitle">
+        <h2 data-i18n="weightChart">體重趨勢</h2>
+        <span data-i18n="movingAvg">7 天平均線</span>
+      </div>
+      <div class="segmented">
+        <button class="segmentBtn active" data-weight-range="7">7D</button>
+        <button class="segmentBtn" data-weight-range="30">30D</button>
+        <button class="segmentBtn" data-weight-range="all" data-i18n="all">全部</button>
+      </div>
+      <div class="chartWrap">
+        <svg id="weightChart" viewBox="0 0 640 260" preserveAspectRatio="none"></svg>
+      </div>
+      <div class="chartLegend">
+        <span><i class="dot raw"></i><span data-i18n="dailyWeight">每日體重</span></span>
+        <span><i class="dot avg"></i><span data-i18n="avgLine">7 天平均</span></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 data-i18n="trend">趨勢</h2>
+      <div class="trendGrid">
+        <div class="statBox"><div data-i18n="currentWeight">目前體重</div><div id="currentWeightStat">—</div></div>
+        <div class="statBox"><div data-i18n="trend7">最近 7 天趨勢</div><div id="trend7Stat">—</div></div>
+        <div class="statBox"><div data-i18n="trend30">最近 30 天趨勢</div><div id="trend30Stat">—</div></div>
+      </div>
+    </div>
+
     <div class="card">
       <h2 data-i18n="recentWeight">近期體重</h2>
       <div id="weightList"></div>

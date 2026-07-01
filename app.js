@@ -1,6 +1,7 @@
 let state = loadState();
 let currentDate = todayISO();
 let pendingImportState = null;
+let weightRange = "30";
 
 const nutrients = [
   { key: "cal", field: "cal", labelKey: "cal", unit: "kcal" },
@@ -195,10 +196,99 @@ function renderHistory() {
   });
 }
 
+
+function weightEntries() {
+  return Object.entries(state.weights || {})
+    .map(([date, weight]) => ({ date, weight: Number(weight) }))
+    .filter(item => item.date && !Number.isNaN(item.weight))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+function movingAverage(entries, windowSize = 7) {
+  return entries.map((item, index) => {
+    const start = Math.max(0, index - windowSize + 1);
+    const slice = entries.slice(start, index + 1);
+    const avg = slice.reduce((sum, x) => sum + x.weight, 0) / slice.length;
+    return { ...item, avg };
+  });
+}
+
+function trendByWindow(entries, windowSize) {
+  if (entries.length < windowSize * 2) return null;
+  const latest = entries.slice(-windowSize);
+  const previous = entries.slice(-windowSize * 2, -windowSize);
+  const avgLatest = latest.reduce((s, x) => s + x.weight, 0) / latest.length;
+  const avgPrevious = previous.reduce((s, x) => s + x.weight, 0) / previous.length;
+  return avgLatest - avgPrevious;
+}
+
+function trendText(value) {
+  if (value === null || value === undefined) return t("insufficientData");
+  const arrow = value > 0.05 ? "↗" : value < -0.05 ? "↘" : "→";
+  const sign = value > 0 ? "+" : "";
+  return `${arrow} ${sign}${value.toFixed(2)} kg`;
+}
+
+function renderWeightStats() {
+  const entries = weightEntries();
+  const latest = entries[entries.length - 1];
+  $("#currentWeightStat").textContent = latest ? `${latest.weight.toFixed(1)} kg` : "—";
+  $("#trend7Stat").textContent = trendText(trendByWindow(entries, 7));
+  $("#trend30Stat").textContent = trendText(trendByWindow(entries, 30));
+}
+
+function visibleWeightEntries() {
+  const entries = movingAverage(weightEntries(), 7);
+  if (weightRange === "all") return entries;
+  const count = Number(weightRange);
+  return entries.slice(-count);
+}
+
+function renderWeightChart() {
+  const svg = $("#weightChart");
+  if (!svg) return;
+  const entries = visibleWeightEntries();
+  if (entries.length < 2) {
+    svg.innerHTML = `<text x="320" y="135" text-anchor="middle" fill="#6b7280" font-size="18">${t("insufficientData")}</text>`;
+    return;
+  }
+
+  const width = 640, height = 260, pad = 28;
+  const values = entries.flatMap(x => [x.weight, x.avg]);
+  const min = Math.min(...values) - 0.3;
+  const max = Math.max(...values) + 0.3;
+  const x = i => pad + (i / (entries.length - 1)) * (width - pad * 2);
+  const y = v => height - pad - ((v - min) / (max - min || 1)) * (height - pad * 2);
+
+  const rawPath = entries.map((d, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(d.weight)}`).join(" ");
+  const avgPath = entries.map((d, i) => `${i === 0 ? "M" : "L"} ${x(i)} ${y(d.avg)}`).join(" ");
+  const grid = [0, .25, .5, .75, 1].map(p => {
+    const gy = pad + p * (height - pad * 2);
+    return `<line x1="${pad}" y1="${gy}" x2="${width-pad}" y2="${gy}" stroke="#e5e7eb" stroke-width="1"/>`;
+  }).join("");
+
+  const points = entries.map((d, i) => `<circle cx="${x(i)}" cy="${y(d.weight)}" r="3.5" fill="#9ca3af"><title>${d.date}: ${d.weight.toFixed(1)} kg</title></circle>`).join("");
+  const first = entries[0], last = entries[entries.length - 1];
+
+  svg.innerHTML = `
+    ${grid}
+    <path d="${rawPath}" fill="none" stroke="#9ca3af" stroke-width="2" opacity="0.65"/>
+    <path d="${avgPath}" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/>
+    ${points}
+    <text x="${pad}" y="${height-6}" fill="#6b7280" font-size="13">${first.date.slice(5)}</text>
+    <text x="${width-pad}" y="${height-6}" fill="#6b7280" font-size="13" text-anchor="end">${last.date.slice(5)}</text>
+    <text x="${pad}" y="18" fill="#6b7280" font-size="13">${max.toFixed(1)}kg</text>
+    <text x="${pad}" y="${height-34}" fill="#6b7280" font-size="13">${min.toFixed(1)}kg</text>
+  `;
+}
+
 function renderWeight() {
-  const entries = Object.entries(state.weights).sort().reverse().slice(0, 10);
+  renderWeightStats();
+  renderWeightChart();
+
+  const entries = weightEntries().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 30);
   $("#weightList").innerHTML = entries.length
-    ? entries.map(([date, weight]) => `${date}：${weight} kg`).join("<br>")
+    ? entries.map(item => `<div class="weightListRow"><div class="weightDate">${item.date}</div><div class="weightValue">${item.weight.toFixed(1)} kg</div></div>`).join("")
     : t("noWeight");
 }
 
@@ -232,7 +322,7 @@ function renderBackupStats() {
     <div class="statBox"><div>${t("recordDays")}</div><div>${stats.days}</div></div>
     <div class="statBox"><div>${t("foodEntries")}</div><div>${stats.foods}</div></div>
     <div class="statBox"><div>${t("weightEntries")}</div><div>${stats.weights}</div></div>
-    <div class="statBox"><div>Version</div><div>3.1</div></div>
+    <div class="statBox"><div>Version</div><div>3.2</div></div>
   `;
 }
 
@@ -324,7 +414,7 @@ function exportData() {
   downloadJSON("nutrition_tracker_backup.json", {
     ...state,
     exportedAt: new Date().toISOString(),
-    appVersion: "3.1"
+    appVersion: "3.2"
   });
 }
 
@@ -405,6 +495,7 @@ function bindEvents() {
 
   $("#saveFoodBtn").addEventListener("click", saveFood);
   $("#saveWeightBtn").addEventListener("click", saveWeight);
+  $$("[data-weight-range]").forEach(btn => btn.addEventListener("click", () => { weightRange = btn.dataset.weightRange; $$("[data-weight-range]").forEach(b => b.classList.toggle("active", b === btn)); renderWeight(); }));
   $("#saveRangesBtn").addEventListener("click", saveRanges);
   $("#exportBtn").addEventListener("click", exportData);
   $("#importFile").addEventListener("change", importData);

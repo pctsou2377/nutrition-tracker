@@ -2,7 +2,7 @@ const I18N = {
   zh: {
     title:"Nutrition Tracker", todayBtn:"今天", dashboard:"Dashboard", rangeHint:"理想區間追蹤",
     history:"歷史紀錄", historyNote:"只顯示有紀錄的日期，點進去查看詳細內容。",
-    weight:"體重", todayWeight:"今日體重 kg", save:"儲存", recentWeight:"近期體重",
+    weight:"體重", todayWeight:"今日體重 kg", save:"儲存", recentWeight:"近期體重", weightChart:"體重趨勢", movingAvg:"7 天平均線", all:"全部", dailyWeight:"每日體重", avgLine:"7 天平均", trend:"趨勢", currentWeight:"目前體重", trend7:"最近 7 天趨勢", trend30:"最近 30 天趨勢", insufficientData:"資料不足",
     settings:"設定", rangeNote:"每項營養素只需要設定：最低值、理想上限。",
     min:"最低值", idealMax:"理想上限", cal:"熱量", protein:"蛋白質", carbs:"碳水", fat:"脂肪",
     saveTarget:"儲存目標區間", backup:"備份", export:"匯出 JSON", import:"匯入 JSON",
@@ -23,7 +23,7 @@ const I18N = {
   id: {
     title:"Nutrition Tracker", todayBtn:"Hari ini", dashboard:"Dashboard", rangeHint:"Pantauan rentang ideal",
     history:"Riwayat", historyNote:"Hanya menampilkan tanggal yang memiliki catatan. Ketuk untuk melihat detail.",
-    weight:"Berat", todayWeight:"Berat hari ini kg", save:"Simpan", recentWeight:"Berat terbaru",
+    weight:"Berat", todayWeight:"Berat hari ini kg", save:"Simpan", recentWeight:"Berat terbaru", weightChart:"Tren berat", movingAvg:"Rata-rata 7 hari", all:"Semua", dailyWeight:"Berat harian", avgLine:"Rata-rata 7 hari", trend:"Tren", currentWeight:"Berat saat ini", trend7:"Tren 7 hari", trend30:"Tren 30 hari", insufficientData:"Data belum cukup",
     settings:"Pengaturan", rangeNote:"Untuk tiap nutrisi, cukup atur: minimum dan batas ideal.",
     min:"Minimum", idealMax:"Batas ideal", cal:"Kalori", protein:"Protein", carbs:"Karbo", fat:"Lemak",
     saveTarget:"Simpan target", backup:"Cadangan", export:"Ekspor JSON", import:"Impor JSON",
