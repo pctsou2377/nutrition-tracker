@@ -402,6 +402,34 @@ function bindEvents() {
 bindEvents();
 renderAll();
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
+function setupServiceWorkerUpdate() {
+  if (!("serviceWorker" in navigator)) return;
+
+  window.addEventListener("load", async () => {
+    const registration = await navigator.serviceWorker.register("./service-worker.js");
+
+    registration.addEventListener("updatefound", () => {
+      const newWorker = registration.installing;
+      if (!newWorker) return;
+
+      newWorker.addEventListener("statechange", () => {
+        if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+          $("#updateBanner").classList.add("show");
+        }
+      });
+    });
+
+    $("#reloadBtn")?.addEventListener("click", () => {
+      if (registration.waiting) {
+        registration.waiting.postMessage({ type: "SKIP_WAITING" });
+      }
+      window.location.reload();
+    });
+  });
+
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    window.location.reload();
+  });
 }
+
+setupServiceWorkerUpdate();
